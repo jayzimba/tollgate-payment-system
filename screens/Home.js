@@ -7,17 +7,19 @@ import {
   ScrollView,
   Alert,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import colors from "../assets/Theme.js/colors";
 import Invoice from "../commponents/Invoice";
 import Advert from "../commponents/Advert";
 import * as Animatable from "react-native-animatable";
 
 const Home = () => {
-  const [balance, setBalance] = useState(150);
-  const [isAdVisible, setIsAdVisible] = useState(false);
+  const [balance, setBalance] = useState(0);
+  const [isAdVisible, setIsAdVisible] = useState(true);
   const [paymentSuccessful, setPaymentSuccessful] = useState(false);
   const [isImageAnimated, setIsImageAnimated] = useState(false);
+  const [customer, setCustomer] = useState([]);
+  const [invoices, setInvoice] = useState([]);
 
   const payNow = (amount) => {
     if (balance < amount) {
@@ -32,6 +34,47 @@ const Home = () => {
       setIsImageAnimated(true);
     }
   };
+
+  useEffect(() => {
+    var formdata = new FormData();
+    formdata.append("customerVehicle", 1);
+
+    var requestOptions = {
+      method: "POST",
+      body: formdata,
+      redirect: "follow",
+    };
+    // Fetch data from the API
+    fetch("https://www.pezabond.com/choonya/fetchInvoice.php", requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        setInvoice(result[0]);
+        setIsAdVisible(false);
+        console.log(invoices);
+      })
+      .catch((error) => console.log("error", error));
+  }, []);
+
+  useEffect(() => {
+    var formdata = new FormData();
+    formdata.append("customerID", 1);
+
+    var requestOptions2 = {
+      method: "POST",
+      body: formdata,
+      redirect: "follow",
+    };
+    // Fetch data from the API
+    fetch("https://www.pezabond.com/choonya/fetchCustomer.php", requestOptions2)
+      .then((response) => response.json())
+      .then((result) => {
+        setCustomer(result[0]);
+        setBalance(parseFloat(customer.account_balance));
+        console.log(customer);
+      })
+      .catch((error) => console.log("error", error));
+  }, []);
+
   return (
     <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
       <View>
@@ -116,7 +159,19 @@ const Home = () => {
 
         {/* invoice or advert area */}
 
-        {isAdVisible ? <Advert /> : <Invoice pay={() => payNow(50)} />}
+        {isAdVisible ? (
+          <Advert />
+        ) : (
+          <Invoice
+            pay={() => payNow(parseFloat(invoices.amount))}
+            amount={invoices.amount}
+            tollgate_name={invoices.tollgate_name}
+            invoice_id={invoices.invoice_id}
+            vehicle_type_name={invoices.vehicle_type_name}
+            date_created={invoices.date_created}
+            plate_number={invoices.plate_number}
+          />
+        )}
       </View>
     </ScrollView>
   );

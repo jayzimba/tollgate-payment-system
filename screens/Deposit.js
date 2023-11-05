@@ -205,7 +205,7 @@ const Deposit = () => {
                 color: "#fff",
               }}
             >
-              Subscribe
+              Deposit Now
             </Text>
           </TouchableOpacity>
         )}

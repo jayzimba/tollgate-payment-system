@@ -1,9 +1,44 @@
-import { StyleSheet, Text, View } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ActivityIndicator,
+  FlatList,
+  RefreshControl,
+} from "react-native";
 import React from "react";
 import colors from "../assets/Theme.js/colors";
 import HistoryCard from "../commponents/HistoryCard";
+import { useState } from "react";
+import { useEffect } from "react";
 
 const History = () => {
+  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    var formdata = new FormData();
+    formdata.append("customerVehicle", 1);
+
+    var requestOptions = {
+      method: "POST",
+      body: formdata,
+      redirect: "follow",
+    };
+    // Fetch data from the API
+    fetch("https://www.pezabond.com/choonya/fetchHistory.php", requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        setData(result);
+      })
+      .catch((error) => console.log("error", error))
+      .finally(() => setLoading(false));
+  };
   return (
     <View style={styles.container}>
       <Text
@@ -19,25 +54,22 @@ const History = () => {
         Transaction History
       </Text>
 
-      <HistoryCard
-        tollgate="Katuba"
-        paymentMethod="app payment (airtel)"
-        amount="20"
-        date="22 Nov, 2023"
-      />
-      <HistoryCard
-        tollgate="Kafulafuta"
-        paymentMethod="app payment (MOMO)"
-        amount="20"
-        date="22 Nov, 2023"
-      />
-
-      <HistoryCard
-        tollgate="Michale sata"
-        paymentMethod="app payment (MOMO)"
-        amount="30"
-        date="22 Nov, 2023"
-      />
+      {loading ? (
+        <ActivityIndicator size="large" color={colors.primary} />
+      ) : (
+        <FlatList
+          data={data}
+          keyExtractor={(item) => item.customer_id.toString()}
+          renderItem={({ item }) => (
+            <HistoryCard
+              tollgate={item.tollgate_name}
+              paymentMethod="method - Mobile money"
+              amount={item.amount}
+              date={item.date_created}
+            />
+          )}
+        />
+      )}
     </View>
   );
 };

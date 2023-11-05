@@ -10,6 +10,7 @@ import {
   FontAwesome,
   FontAwesome5,
   Entypo,
+  Octicons,
 } from "@expo/vector-icons";
 const Profile = () => {
   return (
@@ -90,9 +91,42 @@ const Profile = () => {
               padding: 10,
             }}
           >
-            <Ionicons name="person" size={24} color="black" />
-            <Text style={{ fontSize: 16, fontWeight: "bold" }}> Name: </Text>
-            <Text style={{ fontSize: 16, fontWeight: "300" }}> Name: </Text>
+            <Octicons name="number" size={24} color="black" />
+            <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+              {" "}
+              Number PLate:{" "}
+            </Text>
+            <Text style={{ fontSize: 16, fontWeight: "300" }}> ABC1234 </Text>
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              marginBottom: 50,
+              borderWidth: 0.4,
+              padding: 10,
+            }}
+          >
+            <FontAwesome5 name="car-alt" size={24} color="black" />
+            <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+              Vehicle type:
+            </Text>
+            <Text style={{ fontSize: 16, fontWeight: "300" }}> Car </Text>
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              marginBottom: 50,
+              borderWidth: 0.4,
+              padding: 10,
+            }}
+          >
+            <FontAwesome5 name="car-alt" size={24} color="black" />
+            <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+              Vehicle Model:
+            </Text>
+            <Text style={{ fontSize: 16, fontWeight: "300" }}> BMW </Text>
           </View>
         </View>
       </View>

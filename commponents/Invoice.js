@@ -26,13 +26,13 @@ const Invoice = (props) => {
           TollGate
         </Text>
         <Text style={{ fontWeight: "bold", fontSize: 16, color: colors.black }}>
-          Invoice #23
+          Invoice #{props.invoice_id}
         </Text>
       </View>
       <Text
         style={{ fontWeight: "400", fontSize: 16, color: colors.secondary }}
       >
-        Katuba Tollgate
+        {props.tollgate_name} Tollgate
       </Text>
 
       <View style={{ marginVertical: 20 }}>
@@ -42,7 +42,7 @@ const Invoice = (props) => {
         <Text
           style={{ fontWeight: "400", fontSize: 16, color: colors.secondary }}
         >
-          ABC 2034
+          {props.plate_number}
         </Text>
       </View>
       <View style={{ marginBottom: 20 }}>
@@ -52,7 +52,7 @@ const Invoice = (props) => {
         <Text
           style={{ fontWeight: "400", fontSize: 16, color: colors.secondary }}
         >
-          Bus
+          {props.vehicle_type_name}
         </Text>
       </View>
 
@@ -61,10 +61,10 @@ const Invoice = (props) => {
           <Text
             style={{ fontWeight: "bold", color: colors.primary, fontSize: 22 }}
           >
-            ZMW 50
+            ZMW {props.amount}
           </Text>
           <Text style={{ color: colors.secondary, fontSize: 14 }}>
-            22nd Sept, 2023
+            {props.date_created}
           </Text>
         </View>
       </View>

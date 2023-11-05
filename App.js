@@ -8,11 +8,11 @@ import { PaperProvider } from "react-native-paper";
 
 import colors from "./assets/Theme.js/colors";
 import DrawerContent from "./commponents/DrawerContent";
-import Profile from './screens/Profile';
-import History from './screens/History';
-import Receipt from './screens/Receipt';
-import Deposit from './screens/Deposit';
-import HelpAndSupport from './screens/HelpAndSupport';
+import Profile from "./screens/Profile";
+import History from "./screens/History";
+import Receipt from "./screens/Receipt";
+import Deposit from "./screens/Deposit";
+import HelpAndSupport from "./screens/HelpAndSupport";
 
 const Drawer = createDrawerNavigator();
 
@@ -34,7 +34,6 @@ export default function App() {
             },
             drawerActiveTintColor: colors.primary,
             drawerActiveBackgroundColor: "#fff",
-          
           }}
         >
           <Drawer.Screen name="Home" component={Home} />
