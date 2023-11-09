@@ -31,12 +31,7 @@ const DrawerContent = (props) => {
                 // justifyContent: "center",
                 alignItems: "center",
               }}
-            >
-              <View style={{ marginStart: 10 }}>
-                <Text style={{ color: "white" }}>{"customer[0].name"}</Text>
-                <Text style={{ color: "white" }}>{"customer[0].email"}</Text>
-              </View>
-            </View>
+            ></View>
           </View>
 
           <Drawer.Section style={styles.drawerSection}>
