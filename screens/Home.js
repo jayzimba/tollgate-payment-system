@@ -6,6 +6,7 @@ import {
   Image,
   ScrollView,
   Alert,
+  TouchableOpacity,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import colors from "../assets/Theme.js/colors";
@@ -13,8 +14,9 @@ import Invoice from "../commponents/Invoice";
 import Advert from "../commponents/Advert";
 import * as Animatable from "react-native-animatable";
 import { useSelector } from "react-redux";
+import HistoryCard from "../commponents/HistoryCard";
 
-const Home = () => {
+const Home = ({ navigation }) => {
   const customerData = useSelector((state) => state.customer);
 
   const [balance, setBalance] = useState(0);
@@ -24,6 +26,7 @@ const Home = () => {
   const [isImageAnimated, setIsImageAnimated] = useState(false);
   const [customer, setCustomer] = useState([]);
   const [invoices, setInvoice] = useState([]);
+  const [history, sethistory] = useState([]);
 
   const payNow = (amount) => {
     if (balance < amount) {
@@ -40,10 +43,33 @@ const Home = () => {
   };
 
   useEffect(() => {
+    var formdata = new FormData();
+    formdata.append("customerID", customerId);
+
+    var requestOptions = {
+      method: "POST",
+      body: formdata,
+      redirect: "follow",
+    };
+    // Fetch data from the API
+    fetch(
+      "https://www.pezabond.com/choonya/fetchLastInvoice.php",
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((result) => {
+        if (result != null) {
+          sethistory(result[0]);
+          console.log(history);
+        }
+      })
+      .catch((error) => console.log("error", error));
+  }, []);
+  useEffect(() => {
     var balance_data = customerData.account_balance;
     setBalance(balance_data);
     var formdata = new FormData();
-    formdata.append("customerVehicle", 1);
+    formdata.append("customerID", customerId);
 
     var requestOptions = {
       method: "POST",
@@ -57,6 +83,7 @@ const Home = () => {
         if (result != null) {
           setInvoice(result[0]);
           setIsAdVisible(false);
+          console.log(invoice);
         } else {
           setIsAdVisible(true);
         }
@@ -74,7 +101,7 @@ const Home = () => {
       redirect: "follow",
     };
     // Fetch data from the API
-    fetch("https://www.pezabond.com/choonya/fetchCustomer.php", requestOptions2)
+    fetch("https://www.pezabond.com/2/fetchCustomer.php", requestOptions2)
       .then((response) => response.json())
       .then((result) => {
         setCustomer(result[0]);
@@ -118,51 +145,28 @@ const Home = () => {
           </View>
         </View>
 
-        <Text
-          style={{
-            color: colors.secondary,
-            fontSize: 18,
-            fontWeight: "bold",
-            marginBottom: 15,
-          }}
-        >
-          Last Transaction
-        </Text>
-
-        <View
-          style={{
-            width: "100%",
-            paddingHorizontal: 10,
-            paddingVertical: 5,
-            height: 100,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            shadowColor: colors.black,
-            shadowOffset: {
-              height: 3,
-              width: 3,
-            },
-            shadowOpacity: 0.4,
-            elevation: 4,
-            borderRadius: 0.2,
-            marginVertical: 20,
-          }}
-        >
-          <Image source={require("../images/airtel.png")} />
-          <Text
-            style={{ color: colors.black, fontSize: 20, fontWeight: "bold" }}
-          >
-            Deposit
-          </Text>
-
-          <View style={{ marginEnd: 10 }}>
-            <Text style={{ color: colors.black, fontWeight: "500" }}>
-              ZMW 230
+        {history == null ? null : (
+          <>
+            <Text
+              style={{
+                color: colors.secondary,
+                fontSize: 18,
+                fontWeight: "bold",
+                marginBottom: 15,
+              }}
+            >
+              Last Transaction
             </Text>
-            <Text style={{ color: colors.secondary }}>22nd Sept, 2023</Text>
-          </View>
-        </View>
+            <TouchableOpacity onPress={() => navigation.navigate("History")}>
+              <HistoryCard
+                tollgate={history.tollgate_name}
+                paymentMethod="Mobile App"
+                amount={history.amount}
+                date={history.date_created}
+              />
+            </TouchableOpacity>
+          </>
+        )}
 
         {/* invoice or advert area */}
 

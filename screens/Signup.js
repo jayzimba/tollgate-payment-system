@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
+  ActivityIndicator,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
@@ -21,12 +22,11 @@ class Signup extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      fullName: "",
+      fullname: "",
       email: "",
-      contact: "",
+      phone: "",
       vehicleModel: "",
       regNumber: "",
-      vehicleType: "",
       password: "",
     };
   }
@@ -34,33 +34,30 @@ class Signup extends Component {
   handleSignUp = () => {
     this.setState({ loading: true });
 
-    var fullName = this.state.fullName;
+    var fullname = this.state.fullname;
     var email = this.state.email;
-    var contact = this.state.contact;
+    var phone = this.state.phone;
     var vehicleModel = this.state.vehicleModel;
     var regNumber = this.state.regNumber;
-    var vehicleType = this.state.vehicleType;
     var password = this.state.password;
 
     if (
-      fullName.length == 0 ||
+      fullname.length == 0 ||
       email.length == 0 ||
-      contact.length == 0 ||
+      phone.length == 0 ||
       vehicleModel.length == 0 ||
       regNumber.length == 0 ||
-      vehicleType.length == 0 ||
       password.length == 0
     ) {
       alert("Required Field Is Missing!");
       this.setState({ loading: false });
     } else {
       var formdata = new FormData();
-      formdata.append("fullName", fullName);
+      formdata.append("fullname", fullname);
       formdata.append("email", email);
-      formdata.append("contact", contact);
+      formdata.append("phone", phone);
       formdata.append("vehicleModel", vehicleModel);
       formdata.append("regNumber", regNumber);
-      formdata.append("vehicleType", vehicleType);
       formdata.append("password", password);
 
       var headers = {
@@ -77,9 +74,13 @@ class Signup extends Component {
       fetch("https://www.pezabond.com/choonya/signup.php", requestOptions)
         .then((Response) => Response.json())
         .then((Response) => {
-          alert(Response[0].Message);
-          if (Response[0].Message == "Registered successfuly!") {
+          if (Response[0].Message === "Registered successfuly!") {
+            alert(Response[0].Message);
             this.props.navigation.navigate("Login");
+          } else if (Response[0].Message === "User Already Registered") {
+            alert(Response[0].Message);
+          } else {
+            alert(Response[0].Message);
           }
         })
         .catch((error) => {
@@ -87,12 +88,11 @@ class Signup extends Component {
         })
         .finally(() =>
           this.setState({
-            fullName: "",
+            fullname: "",
             email: "",
-            contact: "",
+            phone: "",
             vehicleModel: "",
             regNumber: "",
-            vehicleType: "",
             password: "",
             loading: false,
           })
@@ -102,15 +102,8 @@ class Signup extends Component {
 
   render() {
     const { navigation } = this.props;
-    const {
-      fullName,
-      email,
-      contact,
-      vehicleModel,
-      regNumber,
-      vehicleType,
-      password,
-    } = this.state;
+    const { fullname, email, phone, vehicleModel, regNumber, password } =
+      this.state;
 
     return (
       <SafeAreaView style={styles.container}>
@@ -146,8 +139,9 @@ class Signup extends Component {
                 placeholder="Enter your full name"
                 selectionColor={colors.primary}
                 style={{ marginStart: 10 }}
-                value={fullName}
-                onChangeText={(text) => this.setState({ fullName: text })}
+                value={fullname}
+                autoCapitalize="none"
+                onChangeText={(text) => this.setState({ fullname: text })}
               />
             </View>
             <View
@@ -168,6 +162,7 @@ class Signup extends Component {
                 style={{ marginStart: 10 }}
                 keyboardType="email-address"
                 value={email}
+                autoCapitalize="none"
                 onChangeText={(text) => this.setState({ email: text })}
               />
             </View>
@@ -184,12 +179,12 @@ class Signup extends Component {
             >
               <Entypo name="phone" size={24} color="black" />
               <TextInput
-                placeholder="Contact"
+                placeholder="phone"
                 keyboardType="number-pad"
                 selectionColor={colors.primary}
                 style={{ marginStart: 10 }}
-                value={contact}
-                onChangeText={(text) => this.setState({ contact: text })}
+                value={phone}
+                onChangeText={(text) => this.setState({ phone: text })}
               />
             </View>
             <View
@@ -231,27 +226,6 @@ class Signup extends Component {
                 style={{ marginStart: 10 }}
                 value={regNumber}
                 onChangeText={(text) => this.setState({ regNumber: text })}
-              />
-            </View>
-
-            <View
-              style={{
-                width: "90%",
-                borderWidth: 0.5,
-                padding: 10,
-                borderRadius: 5,
-                marginBottom: 40,
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <FontAwesome5 name="car" size={24} color="black" />
-              <TextInput
-                placeholder="Vehicle type"
-                selectionColor={colors.primary}
-                style={{ marginStart: 10 }}
-                value={vehicleType}
-                onChangeText={(text) => this.setState({ vehicleType: text })}
               />
             </View>
 
@@ -316,6 +290,10 @@ class Signup extends Component {
               <Text>Proceed to Login</Text>
             </TouchableOpacity>
           </View>
+
+          {this.state.loading ? (
+            <ActivityIndicator color={colors.primary} size="large" />
+          ) : null}
         </ScrollView>
       </SafeAreaView>
     );

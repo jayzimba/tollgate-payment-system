@@ -122,6 +122,7 @@ class Login extends Component {
             <TextInput
               placeholder="Enter your username"
               selectionColor={colors.primary}
+              autoCapitalize="none"
               style={{ marginStart: 10 }}
               onChangeText={(username) => this.setState({ username })}
             />

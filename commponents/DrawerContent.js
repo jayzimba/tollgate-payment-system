@@ -35,7 +35,7 @@ const DrawerContent = (props, { navigate }) => {
               }}
             >
               <Text style={{ color: "white", fontSize: 18 }}>
-                {customerData.firistname + " " + customerData.lastname}
+                {customerData.fullname}
               </Text>
               <Text style={{ color: "white", fontSize: 18 }}>
                 {customerData.email}

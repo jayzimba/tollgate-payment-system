@@ -23,8 +23,11 @@ import {
   Octicons,
 } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
+import { useSelector } from "react-redux";
 
 const History = ({ navigation }) => {
+  const customerData = useSelector((state) => state.customer);
+  const [customerId, setCustomerId] = useState(customerData.id);
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
@@ -35,7 +38,8 @@ const History = ({ navigation }) => {
 
   const fetchData = async () => {
     var formdata = new FormData();
-    formdata.append("customerVehicle", 1);
+
+    formdata.append("customerVehicle", customerId);
 
     var requestOptions = {
       method: "POST",
@@ -77,7 +81,7 @@ const History = ({ navigation }) => {
       ) : (
         <FlatList
           data={data}
-          keyExtractor={(item) => item.customer_id.toString()}
+          keyExtractor={(item) => item.invoice_id}
           renderItem={({ item }) => (
             <HistoryCard
               tollgate={item.tollgate_name}
