@@ -11,8 +11,20 @@ import colors from "../assets/Theme.js/colors";
 import HistoryCard from "../commponents/HistoryCard";
 import { useState } from "react";
 import { useEffect } from "react";
+import {
+  Ionicons,
+  MaterialCommunityIcons,
+  MaterialIcons,
+  AntDesign,
+  Feather,
+  FontAwesome,
+  FontAwesome5,
+  Entypo,
+  Octicons,
+} from "@expo/vector-icons";
+import { TouchableOpacity } from "react-native";
 
-const History = () => {
+const History = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
@@ -41,6 +53,12 @@ const History = () => {
   };
   return (
     <View style={styles.container}>
+      <TouchableOpacity
+        onPress={() => navigation.goBack()}
+        style={{ marginBottom: 20 }}
+      >
+        <Ionicons name="arrow-back-sharp" size={24} color="black" />
+      </TouchableOpacity>
       <Text
         style={{
           fontWeight: "bold",

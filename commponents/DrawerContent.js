@@ -18,8 +18,11 @@ import { Ionicons } from "@expo/vector-icons";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import colors from "../assets/Theme.js/colors";
+import { useSelector } from "react-redux";
 
-const DrawerContent = (props) => {
+const DrawerContent = (props, { navigate }) => {
+  const customerData = useSelector((state) => state.customer);
+
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <DrawerContentScrollView {...props}>
@@ -27,11 +30,17 @@ const DrawerContent = (props) => {
           <View style={styles.userInfoSection}>
             <View
               style={{
-                flexDirection: "row",
                 // justifyContent: "center",
                 alignItems: "center",
               }}
-            ></View>
+            >
+              <Text style={{ color: "white", fontSize: 18 }}>
+                {customerData.firistname + " " + customerData.lastname}
+              </Text>
+              <Text style={{ color: "white", fontSize: 18 }}>
+                {customerData.email}
+              </Text>
+            </View>
           </View>
 
           <Drawer.Section style={styles.drawerSection}>
@@ -79,15 +88,6 @@ const DrawerContent = (props) => {
                 props.navigation.navigate("Deposit");
               }}
             />
-            <DrawerItem
-              icon={(color, size) => (
-                <Icon name="help-circle-outline" color={color} size={22} />
-              )}
-              label="FAQ"
-              onPress={() => {
-                props.navigation.navigate("FAQ");
-              }}
-            />
           </Drawer.Section>
         </View>
       </DrawerContentScrollView>
@@ -97,7 +97,12 @@ const DrawerContent = (props) => {
             <Icon name="exit-to-app" color={color} size={22} />
           )}
           label="Sign Out"
-          onPress={() => console.log("logging out")}
+          onPress={() =>
+            props.navigation.reset({
+              index: 0,
+              routes: [{ name: "App" }],
+            })
+          }
         />
       </Drawer.Section>
     </View>

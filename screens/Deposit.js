@@ -33,7 +33,7 @@ interface RedirectParams {
   transaction_id?: string;
   tx_ref: string;
 }
-const Deposit = () => {
+const Deposit = ({ navigation }) => {
   const [DepositAmount, setDepositAmount] = React.useState("");
   const [phone, setPhone] = React.useState("");
   const dataArray = [
@@ -73,6 +73,12 @@ const Deposit = () => {
 
   return (
     <ScrollView style={styles.container}>
+      <TouchableOpacity
+        onPress={() => navigation.goBack()}
+        style={{ marginBottom: 20 }}
+      >
+        <Ionicons name="arrow-back-sharp" size={24} color="black" />
+      </TouchableOpacity>
       <Text
         style={{
           fontWeight: "bold",

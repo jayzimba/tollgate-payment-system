@@ -12,9 +12,13 @@ import colors from "../assets/Theme.js/colors";
 import Invoice from "../commponents/Invoice";
 import Advert from "../commponents/Advert";
 import * as Animatable from "react-native-animatable";
+import { useSelector } from "react-redux";
 
 const Home = () => {
+  const customerData = useSelector((state) => state.customer);
+
   const [balance, setBalance] = useState(0);
+  const [customerId, setCustomerId] = useState(customerData.id);
   const [isAdVisible, setIsAdVisible] = useState(true);
   const [paymentSuccessful, setPaymentSuccessful] = useState(false);
   const [isImageAnimated, setIsImageAnimated] = useState(false);
@@ -36,6 +40,8 @@ const Home = () => {
   };
 
   useEffect(() => {
+    var balance_data = customerData.account_balance;
+    setBalance(balance_data);
     var formdata = new FormData();
     formdata.append("customerVehicle", 1);
 
@@ -48,16 +54,19 @@ const Home = () => {
     fetch("https://www.pezabond.com/choonya/fetchInvoice.php", requestOptions)
       .then((response) => response.json())
       .then((result) => {
-        setInvoice(result[0]);
-        setIsAdVisible(false);
-        console.log(invoices);
+        if (result != null) {
+          setInvoice(result[0]);
+          setIsAdVisible(false);
+        } else {
+          setIsAdVisible(true);
+        }
       })
       .catch((error) => console.log("error", error));
   }, []);
 
   useEffect(() => {
     var formdata = new FormData();
-    formdata.append("customerID", 1);
+    formdata.append("customerID", customerId);
 
     var requestOptions2 = {
       method: "POST",
@@ -69,8 +78,6 @@ const Home = () => {
       .then((response) => response.json())
       .then((result) => {
         setCustomer(result[0]);
-        setBalance(parseFloat(customer.account_balance));
-        console.log(customer);
       })
       .catch((error) => console.log("error", error));
   }, []);

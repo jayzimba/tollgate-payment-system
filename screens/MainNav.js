@@ -13,6 +13,7 @@ import Receipt from "./Receipt";
 import Deposit from "./Deposit";
 import colors from "./../assets/Theme.js/colors";
 import DrawerContent from "./../commponents/DrawerContent";
+import App from "./../App";
 
 const Drawer = createDrawerNavigator();
 
@@ -41,6 +42,13 @@ export default function MainNav() {
           <Drawer.Screen name="History" component={History} />
           <Drawer.Screen name="Receipt" component={Receipt} />
           <Drawer.Screen name="Deposit" component={Deposit} />
+          <Drawer.Screen
+            name="App"
+            component={App}
+            options={{
+              headerShown: false,
+            }}
+          />
         </Drawer.Navigator>
       </NavigationContainer>
     </PaperProvider>

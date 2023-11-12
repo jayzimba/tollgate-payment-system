@@ -17,14 +17,17 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Login from "./screens/Login";
 import Signup from "./screens/Signup";
 import MainNav from "./screens/MainNav";
+import { Provider } from "react-redux";
+import store from "./Redux/store";
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
 export default function App() {
   return (
-    <PaperProvider>
-      {/* <NavigationContainer>
+    <Provider store={store}>
+      <PaperProvider>
+        {/* <NavigationContainer>
         <Drawer.Navigator
           drawerContent={(props) => <DrawerContent {...props} />}
           style={styles.container}
@@ -49,20 +52,33 @@ export default function App() {
           <Drawer.Screen name="FAQ" component={HelpAndSupport} />
         </Drawer.Navigator>
       </NavigationContainer> */}
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="Signup" component={Signup} />
-          <Stack.Screen
-            options={{
-              headerShown: false,
-            }}
-            name="MainNav"
-            component={MainNav}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </PaperProvider>
+        <NavigationContainer independent={true}>
+          <Stack.Navigator>
+            <Stack.Screen
+              options={{
+                headerShown: false,
+              }}
+              name="Login"
+              component={Login}
+            />
+            <Stack.Screen
+              options={{
+                headerShown: false,
+              }}
+              name="Signup"
+              component={Signup}
+            />
+            <Stack.Screen
+              options={{
+                headerShown: false,
+              }}
+              name="MainNav"
+              component={MainNav}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </PaperProvider>
+    </Provider>
   );
 }
 
