@@ -76,6 +76,7 @@ const History = ({ navigation }) => {
       >
         Transaction History
       </Text>
+
       {loading ? (
         <ActivityIndicator size="large" color={colors.primary} />
       ) : (
