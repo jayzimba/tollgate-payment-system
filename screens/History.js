@@ -55,6 +55,7 @@ const History = ({ navigation }) => {
       .catch((error) => console.log("error", error))
       .finally(() => setLoading(false));
   };
+
   return (
     <View style={styles.container}>
       <TouchableOpacity
